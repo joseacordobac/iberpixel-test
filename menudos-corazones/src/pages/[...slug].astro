@@ -9,6 +9,8 @@ import OFooter from "../components/organisms/o-footer/o-footer.astro";
 
 import { getPostBySlug } from "../services/pages";
 
+Astro.response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+
 const { slug } = Astro.params;
 const pageName = slug || "ejercicio-02";
 
