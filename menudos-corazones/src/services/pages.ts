@@ -1,11 +1,15 @@
 import { routes } from "./lib";
 
 export const getPostBySlug = async (slug: string) => {
-  const endpoint = routes.PAGES + "?slug=" + slug;
+  // Add timestamp to bypass WordPress backend caching
+  const endpoint = routes.PAGES + "?slug=" + slug + "&t=" + Date.now();
+  console.log(`[SSR Fetch] Requesting fresh data from: ${endpoint}`);
+
   const response = await fetch(endpoint, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
     },
     cache: "no-store",
   });
