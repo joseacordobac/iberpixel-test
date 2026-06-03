@@ -12,19 +12,26 @@ interface GalleryItem {
 }
 
 interface Props {
-  sectionTitle: string;
-  subTitulo: string;
-  descripcion: string;
-  galleryGrid: GalleryItem[];
+  data?: {
+    section_title: string;
+    sub_titulo: string;
+    descripcion: string;
+    gallery_grid: GalleryItem[];
+  };
+  sectionTitle?: string;
+  subTitulo?: string;
+  descripcion?: string;
+  galleryGrid?: GalleryItem[];
   class?: string;
   [key: string]: any;
 }
 
 const {
-  sectionTitle,
-  subTitulo,
-  descripcion,
-  galleryGrid = [],
+  data,
+  sectionTitle = data?.section_title,
+  subTitulo = data?.sub_titulo,
+  descripcion = data?.descripcion,
+  galleryGrid = data?.gallery_grid || [],
   class: className = '',
   ...rest
 } = Astro.props;

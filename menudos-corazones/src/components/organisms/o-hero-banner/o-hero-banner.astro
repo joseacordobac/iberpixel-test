@@ -6,21 +6,29 @@ import AImage from "../../atoms/a-image/a-image.astro";
 import AButton from "../../atoms/a-button/a-button.astro";
 
 interface Props {
-  backgroundImg: string;
-  titleHeroBanner: string;
-  subTitle: string;
-  description: string;
-  imgHeart: string;
+  data?: {
+    "background-img": string;
+    title_hero_banner: string;
+    sub_title: string;
+    description: string;
+    img_heart: string;
+  };
+  backgroundImg?: string;
+  titleHeroBanner?: string;
+  subTitle?: string;
+  description?: string;
+  imgHeart?: string;
   class?: string;
   [key: string]: any;
 }
 
 const {
-  backgroundImg,
-  titleHeroBanner,
-  subTitle,
-  description,
-  imgHeart,
+  data,
+  backgroundImg = data?.["background-img"],
+  titleHeroBanner = data?.title_hero_banner,
+  subTitle = data?.sub_title,
+  description = data?.description,
+  imgHeart = data?.img_heart,
   class: className = "",
   ...rest
 } = Astro.props;

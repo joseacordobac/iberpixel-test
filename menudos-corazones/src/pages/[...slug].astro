@@ -1,0 +1,95 @@
+---
+import Layout from "../layouts/Layout.astro";
+import OHeader from "../components/organisms/o-header/o-header.astro";
+import OHeroBanner from "../components/organisms/o-hero-banner/o-hero-banner.astro";
+import OStatistics from "../components/organisms/o-statistics/o-statistics.astro";
+import OVoces from "../components/organisms/o-voces/o-voces.astro";
+import OStoriesCarousel from "../components/organisms/o-stories-carousel/o-stories-carousel.astro";
+import OFooter from "../components/organisms/o-footer/o-footer.astro";
+
+import { getPostBySlug } from "../services/pages";
+import { getAllSlugs } from "../services/allSlugs";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const allSlugs = await getAllSlugs("page");
+
+  return [
+    ...allSlugs.map((slug: any) => ({ params: { slug } })),
+    { params: { slug: undefined } },
+  ];
+}
+
+const { slug } = Astro.params;
+const pageName = slug || "ejercicio-02";
+
+let pages = [];
+let layoutData = [];
+let pageTitle = "Fundación Menudos Corazones - A Pecho Descubierto";
+
+try {
+  pages = await getPostBySlug(pageName);
+  if (pages && pages[0]) {
+    layoutData = pages[0].fields?.layout || [];
+    pageTitle = pages[0].title
+      ? `${pages[0].title} | Fundación Menudos Corazones`
+      : pageTitle;
+  }
+} catch (error) {
+  console.error(`Error loading page layouts for slug "${pageName}" from WordPress:`, error);
+}
+
+const components = {
+  homeherobanner: OHeroBanner,
+  stadistics: OStatistics,
+  vices: OVoces,
+  heart: OStoriesCarousel,
+};
+---
+
+<Layout title={pageTitle}>
+  <!-- Site Header -->
+  <OHeader />
+
+  <!-- Dynamic Content Sections -->
+  <main id="main-content">
+    {
+      layoutData &&
+        layoutData.map((section: any) => {
+          const { acf_fc_layout, data } = section;
+          const Component = components[acf_fc_layout as keyof typeof components];
+
+          if (!Component) {
+            console.warn(`⚠️ Componente desconocido: ${acf_fc_layout}`);
+            return (
+              <div style="color:red; padding: 20px; text-align: center;">
+                Componente no encontrado: {acf_fc_layout}
+              </div>
+            );
+          }
+
+          if (!data) {
+            console.warn(`⚠️ 'data' está indefinido para: ${acf_fc_layout}`);
+            return (
+              <div style="color:orange; padding: 20px; text-align: center;">
+                Datos no disponibles para: {acf_fc_layout}
+              </div>
+            );
+          }
+
+          return <Component data={data} />;
+        })
+    }
+  </main>
+
+  <!-- Site Footer -->
+  <OFooter />
+</Layout>
+
+<style>
+  #main-content {
+    width: 100%;
+    overflow: hidden;
+  }
+</style>

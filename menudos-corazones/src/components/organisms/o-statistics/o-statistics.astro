@@ -17,23 +17,32 @@ interface ButtonData {
 }
 
 interface Props {
-  sectionnTitle: string;
-  subTitle: string;
-  description: string;
-  stadistics: StatItem[];
-  mainBotton: ButtonData;
-  secondBotton: ButtonData;
+  data?: {
+    sectionn_title: string;
+    sub_title: string;
+    description: string;
+    stadistics: StatItem[];
+    main_botton: ButtonData;
+    second_botton: ButtonData;
+  };
+  sectionnTitle?: string;
+  subTitle?: string;
+  description?: string;
+  stadistics?: StatItem[];
+  mainBotton?: ButtonData;
+  secondBotton?: ButtonData;
   class?: string;
   [key: string]: any;
 }
 
 const {
-  sectionnTitle,
-  subTitle,
-  description,
-  stadistics = [],
-  mainBotton,
-  secondBotton,
+  data,
+  sectionnTitle = data?.sectionn_title,
+  subTitle = data?.sub_title,
+  description = data?.description,
+  stadistics = data?.stadistics || [],
+  mainBotton = data?.main_botton,
+  secondBotton = data?.second_botton,
   class: className = '',
   ...rest
 } = Astro.props;

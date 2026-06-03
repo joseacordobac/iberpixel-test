@@ -11,23 +11,32 @@ interface SlideItem {
 }
 
 interface Props {
-  sectionTitle: string;
-  subTitle: string;
-  description: string;
-  btnDonation: string;
-  sliderImg: SlideItem[];
-  gashtagImg: string;
+  data?: {
+    section_title: string;
+    sub_title: string;
+    description: string;
+    btn_donation: string;
+    slider_img: SlideItem[];
+    gashtag_img: string;
+  };
+  sectionTitle?: string;
+  subTitle?: string;
+  description?: string;
+  btnDonation?: string;
+  sliderImg?: SlideItem[];
+  gashtagImg?: string;
   class?: string;
   [key: string]: any;
 }
 
 const {
-  sectionTitle,
-  subTitle,
-  description,
-  btnDonation,
-  sliderImg = [],
-  gashtagImg,
+  data,
+  sectionTitle = data?.section_title,
+  subTitle = data?.sub_title,
+  description = data?.description,
+  btnDonation = data?.btn_donation,
+  sliderImg = data?.slider_img || [],
+  gashtagImg = data?.gashtag_img,
   class: className = '',
   ...rest
 } = Astro.props;
