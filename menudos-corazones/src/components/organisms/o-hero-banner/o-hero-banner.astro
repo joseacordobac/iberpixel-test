@@ -92,9 +92,15 @@ const {
 </section>
 
 <script>
-  import { animateText, scaleIn, fadeInUp } from "../../../scripts/gsap-init";
+  import { animateText, scaleIn, fadeInUp, scrollReact, parallaxImage } from "../../../scripts/gsap-init";
 
   function initHeroAnimations() {
+    // Set initial scale on background image to prevent white gaps during parallax
+    gsap.set(".o-hero-banner__bg", { scale: 1.1, transformOrigin: "center center" });
+    
+    // Parallax background scroll reaction
+    parallaxImage(".o-hero-banner__bg");
+
     // Animate hero text and heart graphic on load
     animateText(".o-hero-banner__title", {
       type: "words",
@@ -112,9 +118,21 @@ const {
       scrollTrigger: false,
     });
 
+    // Entrance animation for heart graphic
     scaleIn(".o-hero-banner__heart-graphic", {
       delay: 0.5,
       scrollTrigger: false,
+    });
+
+    // Scroll reaction for heart graphic (rotate and shift down/up on scroll)
+    scrollReact(".o-hero-banner__heart-graphic", {
+      trigger: "#hero-banner",
+      start: "top top",
+      end: "bottom top",
+      rotation: 15,
+      y: 40,
+      scale: 0.9,
+      scrub: 1,
     });
 
     // Wire up hero play button click to campaign video
@@ -130,6 +148,7 @@ const {
   }
 
   // Load animation
+  import { gsap } from 'gsap';
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initHeroAnimations);
   } else {

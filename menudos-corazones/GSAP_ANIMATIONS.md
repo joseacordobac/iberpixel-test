@@ -83,6 +83,40 @@ Anima elementos con efecto de escala.
 ### `parallaxImage(selector)`
 Crea efecto parallax en imágenes durante el scroll.
 
+### `scrollProgressBar(selector)`
+Crea e inicializa una barra indicadora de progreso de lectura (scroll) vinculada de forma fija al viewport.
+
+**Ejemplo:**
+```javascript
+scrollProgressBar('.scroll-progress-bar');
+```
+
+### `scrollReact(selector, options)`
+Vincula transformaciones de un elemento directamente al progreso de scroll de un contenedor trigger (`scrub: true`).
+
+**Opciones:**
+- `trigger`: El selector o elemento que activa la animación (default: el propio elemento).
+- `start`: Posición de inicio (default: 'top bottom').
+- `end`: Posición de fin (default: 'bottom top').
+- `scrub`: Retraso de seguimiento de scroll (default: 0.5, `true` para respuesta instantánea).
+- `rotation`: Grados de rotación final.
+- `y`: Desplazamiento vertical final.
+- `x`: Desplazamiento horizontal final.
+- `scale`: Escala final del elemento.
+- `opacity`: Opacidad final del elemento.
+
+**Ejemplo:**
+```javascript
+scrollReact('.my-heart-graphic', {
+  trigger: '#hero-section',
+  start: 'top top',
+  end: 'bottom top',
+  rotation: 15,
+  y: 30,
+  scrub: 1
+});
+```
+
 ## 🎨 Componentes Animados
 
 ### HeroBigFont

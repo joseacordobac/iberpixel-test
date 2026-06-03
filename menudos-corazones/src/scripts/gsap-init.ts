@@ -245,3 +245,81 @@ export function parallaxImage(selector: string) {
     });
   });
 }
+
+export interface ScrollReactOptions {
+  trigger?: string | HTMLElement;
+  start?: string;
+  end?: string;
+  scrub?: boolean | number;
+  rotation?: number;
+  y?: number | string;
+  x?: number | string;
+  scale?: number;
+  opacity?: number;
+  ease?: string;
+}
+
+export function scrollReact(selector: string, options: ScrollReactOptions = {}) {
+  if (typeof window === 'undefined') return;
+
+  const elements = document.querySelectorAll(selector);
+  if (elements.length === 0) return;
+
+  const {
+    trigger,
+    start = 'top bottom',
+    end = 'bottom top',
+    scrub = 0.5,
+    rotation,
+    y,
+    x,
+    scale,
+    opacity,
+    ease = 'none',
+  } = options;
+
+  elements.forEach((element) => {
+    const targetTrigger = trigger
+      ? (typeof trigger === 'string' ? document.querySelector(trigger) : trigger)
+      : element;
+
+    const animConfig: gsap.TweenVars = {
+      ease,
+      scrollTrigger: {
+        trigger: targetTrigger || element,
+        start,
+        end,
+        scrub,
+      },
+    };
+
+    if (rotation !== undefined) animConfig.rotation = rotation;
+    if (y !== undefined) animConfig.y = y;
+    if (x !== undefined) animConfig.x = x;
+    if (scale !== undefined) animConfig.scale = scale;
+    if (opacity !== undefined) animConfig.opacity = opacity;
+
+    gsap.to(element, animConfig);
+  });
+}
+
+export function scrollProgressBar(selector: string) {
+  if (typeof window === 'undefined') return;
+
+  const element = document.querySelector(selector);
+  if (!element) return;
+
+  gsap.set(element, { scaleX: 0, transformOrigin: 'left center' });
+
+  gsap.to(element, {
+    scaleX: 1,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: document.documentElement,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.3,
+    },
+  });
+}
+
