@@ -1,0 +1,71 @@
+/* a-button styles following BEMIT naming convention */
+
+.a-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+/* Modifiers */
+.a-button--primary {
+  background-color: #d00a30;
+  color: #ffffff;
+}
+
+.a-button--primary:hover {
+  background-color: #b00828;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(208, 10, 48, 0.2);
+}
+
+.a-button--outline {
+  background-color: transparent;
+  border-color: #787878;
+  color: #333333;
+}
+
+.a-button--outline:hover {
+  background-color: #333333;
+  border-color: #333333;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.a-button--white {
+  background-color: #ffffff;
+  color: #d00a30;
+}
+
+.a-button--white:hover {
+  background-color: #fde6eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+}
+
+.a-button--nav {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #333333;
+  font-weight: 500;
+}
+
+.a-button--nav:hover {
+  color: #d00a30;
+}
+
+/* States */
+.a-button.is-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}

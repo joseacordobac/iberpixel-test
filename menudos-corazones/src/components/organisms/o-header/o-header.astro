@@ -1,0 +1,27 @@
+---
+import './o-header.css';
+import AImage from '../../atoms/a-image/a-image.astro';
+import MNavMenu from '../../molecules/m-nav-menu/m-nav-menu.astro';
+import AButton from '../../atoms/a-button/a-button.astro';
+
+interface Props {
+  class?: string;
+  [key: string]: any;
+}
+
+const { class: className = '', ...rest } = Astro.props;
+---
+
+<header class={`o-header ${className}`} {...rest}>
+  <a href="#hero-banner" class="o-header__logo-link">
+    <AImage src="/mc-logo.svg" alt="Fundación Menudos Corazones" class="o-header__logo-img" />
+  </a>
+
+  <MNavMenu />
+
+  <div class="o-header__actions">
+    <AButton variant="primary" href="#donation-form">
+      Dona Ahora
+    </AButton>
+  </div>
+</header>

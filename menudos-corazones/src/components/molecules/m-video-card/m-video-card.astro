@@ -1,0 +1,25 @@
+---
+import './m-video-card.css';
+import AImage from '../../atoms/a-image/a-image.astro';
+
+interface Props {
+  src: string;
+  videoUrl: string;
+  variant?: 'default' | 'tall';
+  class?: string;
+  [key: string]: any;
+}
+
+const { src, videoUrl, variant = 'default', class: className = '', ...rest } = Astro.props;
+
+const classes = `m-video-card ${variant !== 'default' ? `m-video-card--${variant}` : ''} ${className}`.trim();
+---
+
+<div class={classes} data-video-url={videoUrl} {...rest}>
+  <AImage src={src} alt="Video thumbnail" class="m-video-card__img" />
+  <div class="m-video-card__overlay">
+    <div class="m-video-card__play">
+      <div class="m-video-card__play-icon" />
+    </div>
+  </div>
+</div>

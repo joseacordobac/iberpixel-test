@@ -1,0 +1,140 @@
+---
+import "./o-hero-banner.css";
+import ATitle from "../../atoms/a-title/a-title.astro";
+import AParagraph from "../../atoms/a-paragraph/a-paragraph.astro";
+import AImage from "../../atoms/a-image/a-image.astro";
+import AButton from "../../atoms/a-button/a-button.astro";
+
+interface Props {
+  backgroundImg: string;
+  titleHeroBanner: string;
+  subTitle: string;
+  description: string;
+  imgHeart: string;
+  class?: string;
+  [key: string]: any;
+}
+
+const {
+  backgroundImg,
+  titleHeroBanner,
+  subTitle,
+  description,
+  imgHeart,
+  class: className = "",
+  ...rest
+} = Astro.props;
+---
+
+<section class={`o-hero-banner ${className}`} id="hero-banner" {...rest}>
+  <AImage
+    src={backgroundImg}
+    alt="Hero Background"
+    class="o-hero-banner__bg"
+    loading="eager"
+  />
+  <div class="o-hero-banner__overlay"></div>
+
+  <!-- Center Play Button Overlay -->
+  <div class="o-hero-banner__play-overlay" id="hero-play-button" role="button" aria-label="Reproducir campaña">
+    <div class="o-hero-banner__play-circle">
+      <div class="o-hero-banner__play-triangle-center"></div>
+    </div>
+  </div>
+
+  <div class="o-hero-banner__container">
+    <div class="o-hero-banner__left">
+      <ATitle tag="h1" variant="hero" class="o-hero-banner__title">
+        {titleHeroBanner}
+      </ATitle>
+      <AParagraph variant="lead" class="o-hero-banner__subtitle">
+        {subTitle}
+      </AParagraph>
+      <AParagraph
+        variant="body"
+        html={description}
+        class="o-hero-banner__desc"
+      />
+    </div>
+
+    <div class="o-hero-banner__right">
+      <AImage
+        src={imgHeart}
+        alt="Heart Open Chest Art"
+        class="o-hero-banner__heart-graphic"
+        loading="eager"
+      />
+    </div>
+  </div>
+
+  <div class="o-hero-banner__badge">
+    Video disponible a partir del 13 de febrero
+  </div>
+
+  <div class="o-hero-banner__strip">
+    <div class="o-hero-banner__strip-container">
+      <AButton
+        variant="primary"
+        href="#donation-form"
+        class="o-hero-banner__strip-btn"
+      >
+        Dona ahora
+      </AButton>
+      <AButton
+        variant="white"
+        href="#voces"
+        class="o-hero-banner__strip-btn o-hero-banner__strip-btn--campaign"
+      >
+        <span class="o-hero-banner__play-triangle">▶</span> Ver campaña
+      </AButton>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { animateText, scaleIn, fadeInUp } from "../../../scripts/gsap-init";
+
+  function initHeroAnimations() {
+    // Animate hero text and heart graphic on load
+    animateText(".o-hero-banner__title", {
+      type: "words",
+      stagger: 0.04,
+      scrollTrigger: false,
+    });
+
+    fadeInUp(".o-hero-banner__subtitle", {
+      delay: 0.4,
+      scrollTrigger: false,
+    });
+
+    fadeInUp(".o-hero-banner__desc", {
+      delay: 0.6,
+      scrollTrigger: false,
+    });
+
+    scaleIn(".o-hero-banner__heart-graphic", {
+      delay: 0.5,
+      scrollTrigger: false,
+    });
+
+    // Wire up hero play button click to campaign video
+    const heroPlay = document.getElementById("hero-play-button");
+    if (heroPlay) {
+      heroPlay.addEventListener("click", () => {
+        const firstVocesCard = document.querySelector(".o-voces__card");
+        if (firstVocesCard) {
+          (firstVocesCard as HTMLElement).click();
+        }
+      });
+    }
+  }
+
+  // Load animation
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHeroAnimations);
+  } else {
+    initHeroAnimations();
+  }
+
+  document.addEventListener("astro:page-load", initHeroAnimations);
+</script>

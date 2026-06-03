@@ -1,0 +1,215 @@
+---
+import './o-voces.css';
+import ATitle from '../../atoms/a-title/a-title.astro';
+import AParagraph from '../../atoms/a-paragraph/a-paragraph.astro';
+import MVideoCard from '../../molecules/m-video-card/m-video-card.astro';
+import AButton from '../../atoms/a-button/a-button.astro';
+import AImage from '../../atoms/a-image/a-image.astro';
+
+interface GalleryItem {
+  img_gallery: string;
+  yt_url: string;
+}
+
+interface Props {
+  sectionTitle: string;
+  subTitulo: string;
+  descripcion: string;
+  galleryGrid: GalleryItem[];
+  class?: string;
+  [key: string]: any;
+}
+
+const {
+  sectionTitle,
+  subTitulo,
+  descripcion,
+  galleryGrid = [],
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+// To match the screenshot layout exactly:
+// galleryGrid[0] is Elena (Frame-1.png) - Top Left
+// galleryGrid[1] is Julian (Frame-3.png) - Right Column (Tall)
+// galleryGrid[2] is Lorena/Man (Frame-4.png) - Bottom Left
+// The bottom center is a duplicate of Elena (galleryGrid[0] / Frame-1.png or we can use another image)
+// The Comunidad image is galleryGrid[3] (Frame-2.png) - Mother and daughters, shown at the bottom
+const elenaVideo = galleryGrid[0] || { img_gallery: '', yt_url: '' };
+const julianVideo = galleryGrid[1] || { img_gallery: '', yt_url: '' };
+const lorenaVideo = galleryGrid[2] || { img_gallery: '', yt_url: '' };
+const comunidadVideo = galleryGrid[3] || { img_gallery: '', yt_url: '' };
+---
+
+<section class={`o-voces ${className}`} id="voces" {...rest}>
+  <div class="o-voces__container">
+    <div class="o-voces__header">
+      <ATitle tag="h2" variant="section" class="o-voces__title">
+        {sectionTitle}
+      </ATitle>
+      <AParagraph variant="lead" class="o-voces__subtitle">
+        {subTitulo}
+      </AParagraph>
+      <AParagraph variant="body" class="o-voces__desc">
+        {descripcion}
+      </AParagraph>
+    </div>
+
+    <!-- Voices Asymmetric Grid -->
+    <div class="o-voces__layout">
+      <div class="o-voces__layout-left">
+        <!-- Top Wide Thumbnail -->
+        <MVideoCard
+          src={elenaVideo.img_gallery}
+          videoUrl={elenaVideo.yt_url}
+          class="o-voces__card"
+        />
+        <!-- Bottom Row (2 Columns) -->
+        <div class="o-voces__layout-left-row">
+          <MVideoCard
+            src={lorenaVideo.img_gallery}
+            videoUrl={lorenaVideo.yt_url}
+            class="o-voces__card"
+          />
+          <MVideoCard
+            src={elenaVideo.img_gallery}
+            videoUrl={elenaVideo.yt_url}
+            class="o-voces__card"
+          />
+        </div>
+      </div>
+
+      <!-- Right Tall Column Thumbnail -->
+      <MVideoCard
+        src={julianVideo.img_gallery}
+        videoUrl={julianVideo.yt_url}
+        variant="tall"
+        class="o-voces__card"
+      />
+    </div>
+
+    <!-- YouTube Dynamic Player Container -->
+    <div class="o-voces__player-wrapper" id="youtube-player-container">
+      <button class="o-voces__player-close" id="youtube-player-close" aria-label="Close video">✕</button>
+      <iframe
+        id="youtube-player-iframe"
+        class="o-voces__player-iframe"
+        src=""
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <!-- Comunidad Block -->
+    <div class="o-voces__comunidad">
+      <ATitle tag="h3" variant="card" class="o-voces__comunidad-title">
+        Comunidad
+      </ATitle>
+      <div class="o-voces__comunidad-img-wrapper m-video-card" data-video-url={comunidadVideo.yt_url}>
+        <AImage
+          src={comunidadVideo.img_gallery}
+          alt="Comunidad Menudos Corazones"
+          class="o-voces__comunidad-img"
+        />
+        <div class="o-voces__comunidad-badge">
+          Video disponible a partir del 13 de febrero
+        </div>
+      </div>
+      <AButton variant="white" href="#donation-form" class="o-voces__comunidad-btn">
+        Colabora con Nosotros
+      </AButton>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { animateText, scaleIn, fadeInUp } from '../../../scripts/gsap-init';
+
+  function initVocesInteractive() {
+    const cards = document.querySelectorAll('.m-video-card');
+    const playerContainer = document.getElementById('youtube-player-container');
+    const iframe = document.getElementById('youtube-player-iframe') as HTMLIFrameElement;
+    const closeBtn = document.getElementById('youtube-player-close');
+
+    if (!playerContainer || !iframe || !closeBtn) return;
+
+    cards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const videoUrl = card.getAttribute('data-video-url');
+        if (!videoUrl) return;
+
+        // Parse YouTube ID
+        const match = videoUrl.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^& \n]+)/);
+        if (match && match[1]) {
+          const videoId = match[1];
+          iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+          // Show and animate container using GSAP
+          playerContainer.classList.add('is-active');
+          gsap.killTweensOf(playerContainer);
+          gsap.fromTo(playerContainer,
+            { display: 'block', opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+          );
+
+          // Scroll smoothly to player
+          playerContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      // Hide container
+      gsap.to(playerContainer, {
+        opacity: 0,
+        y: 20,
+        duration: 0.3,
+        ease: 'power2.in',
+        onComplete: () => {
+          playerContainer.classList.remove('is-active');
+          iframe.src = '';
+        }
+      });
+    });
+  }
+
+  function initVocesAnimations() {
+    // Title
+    animateText('.o-voces__title', {
+      type: 'words',
+      stagger: 0.05,
+    });
+
+    // Subtitle & Desc
+    fadeInUp('.o-voces__subtitle', { delay: 0.2 });
+    fadeInUp('.o-voces__desc', { delay: 0.3 });
+
+    // Grid thumbnails
+    scaleIn('.o-voces__card', {
+      stagger: 0.1,
+      delay: 0.4,
+    });
+
+    // Comunidad
+    fadeInUp('.o-voces__comunidad-title', { delay: 0.5 });
+    scaleIn('.o-voces__comunidad-img-wrapper', { delay: 0.6 });
+    fadeInUp('.o-voces__comunidad-btn', { delay: 0.7 });
+  }
+
+  // Load interactive
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initVocesInteractive();
+      initVocesAnimations();
+    });
+  } else {
+    initVocesInteractive();
+    initVocesAnimations();
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initVocesInteractive();
+    initVocesAnimations();
+  });
+</script>

@@ -1,0 +1,14 @@
+{
+  "primary": {
+    "red": "#d00a30",
+    "red-hover": "#b00828",
+    "red-light": "#fde6eb",
+    "charcoal": "#1a1a1a",
+    "charcoal-light": "#333333",
+    "accent-yellow": "#e5b413",
+    "gray-text": "#787878",
+    "gray-bg": "#f9f9f9",
+    "white": "#ffffff",
+    "black": "#000000"
+  }
+}

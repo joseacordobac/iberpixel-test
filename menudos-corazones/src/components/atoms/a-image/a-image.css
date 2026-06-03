@@ -1,0 +1,16 @@
+/* a-image styles following BEMIT naming convention */
+
+.a-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.a-image--rounded {
+  border-radius: 16px;
+}
+
+.a-image--circle {
+  border-radius: 50%;
+}

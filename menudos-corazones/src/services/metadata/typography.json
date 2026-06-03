@@ -1,0 +1,14 @@
+{
+  "fonts": {
+    "heading": "Outfit, sans-serif",
+    "body": "Inter, sans-serif",
+    "script": "Caveat, cursive"
+  },
+  "sizes": {
+    "hero-title": "clamp(32px, 5vw, 64px)",
+    "section-title": "clamp(24px, 3.5vw, 42px)",
+    "sub-title": "clamp(18px, 2vw, 24px)",
+    "body": "clamp(14px, 1.2vw, 16px)",
+    "small": "13px"
+  }
+}

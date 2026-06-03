@@ -1,0 +1,125 @@
+---
+import './o-statistics.css';
+import ATitle from '../../atoms/a-title/a-title.astro';
+import AParagraph from '../../atoms/a-paragraph/a-paragraph.astro';
+import MStatCard from '../../molecules/m-stat-card/m-stat-card.astro';
+import AButton from '../../atoms/a-button/a-button.astro';
+
+interface StatItem {
+  card_title: string;
+  information_card: string;
+}
+
+interface ButtonData {
+  title: string;
+  url: string;
+  target?: string;
+}
+
+interface Props {
+  sectionnTitle: string;
+  subTitle: string;
+  description: string;
+  stadistics: StatItem[];
+  mainBotton: ButtonData;
+  secondBotton: ButtonData;
+  class?: string;
+  [key: string]: any;
+}
+
+const {
+  sectionnTitle,
+  subTitle,
+  description,
+  stadistics = [],
+  mainBotton,
+  secondBotton,
+  class: className = '',
+  ...rest
+} = Astro.props;
+---
+
+<section class={`o-statistics ${className}`} id="realidad" {...rest}>
+  <div class="o-statistics__header">
+    <ATitle tag="h2" variant="section" class="o-statistics__title">
+      {sectionnTitle}
+    </ATitle>
+    <AParagraph variant="lead" class="o-statistics__subtitle">
+      {subTitle}
+    </AParagraph>
+    <AParagraph variant="body" class="o-statistics__desc">
+      {description}
+    </AParagraph>
+  </div>
+
+  <div class="o-statistics__grid">
+    {
+      stadistics.map((item) => (
+        <MStatCard
+          number={item.card_title}
+          text={item.information_card}
+          class="o-statistics__card"
+        />
+      ))
+    }
+  </div>
+
+  <div class="o-statistics__actions">
+    {
+      mainBotton && mainBotton.title && (
+        <AButton variant="primary" href={mainBotton.url} target={mainBotton.target} class="o-statistics__btn">
+          {mainBotton.title}
+        </AButton>
+      )
+    }
+    {
+      secondBotton && secondBotton.title && (
+        <AButton variant="outline" href={secondBotton.url} target={secondBotton.target} class="o-statistics__btn">
+          {secondBotton.title}
+        </AButton>
+      )
+    }
+  </div>
+</section>
+
+<script>
+  import { animateText, fadeInUp } from '../../../scripts/gsap-init';
+
+  function initStatsAnimations() {
+    // Title animation
+    animateText('.o-statistics__title', {
+      type: 'words',
+      stagger: 0.05,
+    });
+
+    // Subtitle & description fade in
+    fadeInUp('.o-statistics__subtitle', {
+      delay: 0.2,
+    });
+
+    fadeInUp('.o-statistics__desc', {
+      delay: 0.3,
+    });
+
+    // Cards fade in staggered
+    fadeInUp('.o-statistics__card', {
+      stagger: 0.15,
+      delay: 0.4,
+    });
+
+    // Buttons
+    fadeInUp('.o-statistics__btn', {
+      stagger: 0.1,
+      delay: 0.6,
+    });
+  }
+
+  // Load animation
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initStatsAnimations);
+  } else {
+    initStatsAnimations();
+  }
+
+  document.addEventListener('astro:page-load', initStatsAnimations);
+</script>

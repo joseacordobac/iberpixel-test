@@ -1,0 +1,14 @@
+---
+// Component to initialize GSAP animations globally on the client side
+---
+<script>
+  import { initGSAP } from '../../../scripts/gsap-init';
+
+  // Initialize immediately
+  initGSAP();
+
+  // Re-initialize after Astro Page transitions if they are used
+  document.addEventListener('astro:page-load', () => {
+    initGSAP();
+  });
+</script>

@@ -1,0 +1,25 @@
+---
+import './a-title.css';
+
+interface Props {
+  tag?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span' | 'div';
+  variant?: 'hero' | 'section' | 'card' | 'script';
+  class?: string;
+  id?: string;
+  [key: string]: any;
+}
+
+const {
+  tag: Tag = 'h2',
+  variant = 'section',
+  class: className = '',
+  id,
+  ...rest
+} = Astro.props;
+
+const classes = `a-title a-title--${variant} ${className}`.trim();
+---
+
+<Tag class={classes} id={id} {...rest}>
+  <slot />
+</Tag>

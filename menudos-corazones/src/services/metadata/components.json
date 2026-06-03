@@ -1,0 +1,25 @@
+{
+  "atoms": {
+    "button": {
+      "variants": ["primary", "outline", "white", "nav"],
+      "sizes": ["small", "medium", "large"]
+    },
+    "title": {
+      "variants": ["hero", "section", "card", "script"]
+    },
+    "paragraph": {
+      "variants": ["lead", "body", "meta"]
+    }
+  },
+  "molecules": {
+    "nav-menu": {
+      "variants": ["horizontal", "vertical"]
+    },
+    "stat-card": {
+      "variants": ["standard"]
+    },
+    "video-card": {
+      "variants": ["standard"]
+    }
+  }
+}

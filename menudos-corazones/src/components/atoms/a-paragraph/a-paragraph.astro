@@ -1,0 +1,31 @@
+---
+import './a-paragraph.css';
+
+interface Props {
+  variant?: 'lead' | 'body' | 'meta';
+  html?: string;
+  class?: string;
+  id?: string;
+  [key: string]: any;
+}
+
+const {
+  variant = 'body',
+  html,
+  class: className = '',
+  id,
+  ...rest
+} = Astro.props;
+
+const classes = `a-paragraph a-paragraph--${variant} ${className}`.trim();
+---
+
+{
+  html ? (
+    <div class={classes} id={id} set:html={html} {...rest} />
+  ) : (
+    <p class={classes} id={id} {...rest}>
+      <slot />
+    </p>
+  )
+}

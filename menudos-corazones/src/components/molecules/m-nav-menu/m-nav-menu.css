@@ -1,0 +1,28 @@
+/* m-nav-menu styles following BEMIT naming convention */
+
+.m-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.m-nav-menu__item {
+  display: inline-block;
+}
+
+/* Style for active Campaign page link capsule */
+.m-nav-menu__item:first-child .a-button {
+  background-color: #fde6eb;
+  color: #d00a30;
+  border-radius: 9999px;
+  font-weight: 700;
+}
+
+@media (max-width: 991px) {
+  .m-nav-menu {
+    display: none;
+  }
+}

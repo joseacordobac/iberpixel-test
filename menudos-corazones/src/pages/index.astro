@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import OHeader from '../components/organisms/o-header/o-header.astro';
+import OHeroBanner from '../components/organisms/o-hero-banner/o-hero-banner.astro';
+import OStatistics from '../components/organisms/o-statistics/o-statistics.astro';
+import OVoces from '../components/organisms/o-voces/o-voces.astro';
+import OStoriesCarousel from '../components/organisms/o-stories-carousel/o-stories-carousel.astro';
+
+import { getPages } from '../services/getPages';
+
+let layoutData = [];
+let pageTitle = "Fundación Menudos Corazones - A Pecho Descubierto";
+
+try {
+  const pages = await getPages("home");
+  if (pages && pages[0]) {
+    layoutData = pages[0].fields?.layout || [];
+    pageTitle = pages[0].title ? `${pages[0].title} | Fundación Menudos Corazones` : pageTitle;
+  }
+} catch (error) {
+  console.error("Error loading home page layouts from WordPress:", error);
+}
+---
+
+<Layout title={pageTitle}>
+  <!-- Site Header -->
+  <OHeader />
+
+  <!-- Dynamic Content Sections -->
+  <main id="main-content">
+    {
+      layoutData.map((layout) => {
+        switch (layout.acf_fc_layout) {
+          case 'homeherobanner':
+            return (
+              <OHeroBanner
+                backgroundImg={layout.data['background-img']}
+                titleHeroBanner={layout.data.title_hero_banner}
+                subTitle={layout.data.sub_title}
+                description={layout.data.description}
+                imgHeart={layout.data.img_heart}
+              />
+            );
+          case 'stadistics':
+            return (
+              <OStatistics
+                sectionnTitle={layout.data.sectionn_title}
+                subTitle={layout.data.sub_title}
+                description={layout.data.description}
+                stadistics={layout.data.stadistics}
+                mainBotton={layout.data.main_botton}
+                secondBotton={layout.data.second_botton}
+              />
+            );
+          case 'vices':
+            return (
+              <OVoces
+                sectionTitle={layout.data.section_title}
+                subTitulo={layout.data.sub_titulo}
+                descripcion={layout.data.descripcion}
+                galleryGrid={layout.data.gallery_grid}
+              />
+            );
+          case 'heart':
+            return (
+              <OStoriesCarousel
+                sectionTitle={layout.data.section_title}
+                subTitle={layout.data.sub_title}
+                description={layout.data.description}
+                btnDonation={layout.data.btn_donation}
+                sliderImg={layout.data.slider_img}
+                gashtagImg={layout.data.gashtag_img}
+              />
+            );
+          default:
+            return null;
+        }
+      })
+    }
+  </main>
+</Layout>
+
+<style>
+  #main-content {
+    width: 100%;
+    overflow: hidden;
+  }
+</style>

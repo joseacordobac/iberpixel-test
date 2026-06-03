@@ -1,0 +1,62 @@
+/* o-statistics styles following BEMIT naming convention */
+
+.o-statistics {
+  background-color: #ffffff;
+  padding: 100px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  box-sizing: border-box;
+}
+
+.o-statistics__header {
+  text-align: center;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.o-statistics__subtitle {
+  color: #d00a30 !important;
+  font-weight: 600;
+}
+
+.o-statistics__desc {
+  color: #787878;
+}
+
+.o-statistics__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  width: 100%;
+}
+
+.o-statistics__actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .o-statistics {
+    padding: 60px 20px;
+    gap: 36px;
+  }
+
+  .o-statistics__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .o-statistics__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

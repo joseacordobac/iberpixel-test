@@ -1,0 +1,182 @@
+---
+import './o-stories-carousel.css';
+import ATitle from '../../atoms/a-title/a-title.astro';
+import AParagraph from '../../atoms/a-paragraph/a-paragraph.astro';
+import AButton from '../../atoms/a-button/a-button.astro';
+import AImage from '../../atoms/a-image/a-image.astro';
+
+interface SlideItem {
+  img: string;
+  img_complementary_text: string;
+}
+
+interface Props {
+  sectionTitle: string;
+  subTitle: string;
+  description: string;
+  btnDonation: string;
+  sliderImg: SlideItem[];
+  gashtagImg: string;
+  class?: string;
+  [key: string]: any;
+}
+
+const {
+  sectionTitle,
+  subTitle,
+  description,
+  btnDonation,
+  sliderImg = [],
+  gashtagImg,
+  class: className = '',
+  ...rest
+} = Astro.props;
+---
+
+<section class={`o-stories-carousel ${className}`} id="relatos" {...rest}>
+  <div class="o-stories-carousel__header">
+    <ATitle tag="h2" variant="section" class="o-stories-carousel__title">
+      {sectionTitle}
+    </ATitle>
+    <AParagraph variant="lead" class="o-stories-carousel__subtitle">
+      {subTitle}
+    </AParagraph>
+    <AParagraph variant="body" class="o-stories-carousel__desc">
+      {description}
+    </AParagraph>
+  </div>
+
+  <!-- Horizontal Card Carousel Wrapper -->
+  <div class="o-stories-carousel__slider-container">
+    <AButton
+      variant="white"
+      class="o-stories-carousel__nav-btn o-stories-carousel__nav-btn--prev"
+      aria-label="Anterior"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="o-stories-carousel__nav-icon">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </AButton>
+
+    <div class="o-stories-carousel__slider">
+      {
+        sliderImg.map((item, index) => (
+          <div
+            class={`o-stories-carousel__card ${index === 0 ? 'is-active' : ''}`}
+            role="button"
+            aria-label={`Historia ${index + 1}`}
+          >
+            <AImage src={item.img} alt={`Paciente ${index + 1}`} class="o-stories-carousel__card-img" />
+            <div class="o-stories-carousel__card-text-overlay">
+              <p class="o-stories-carousel__card-text">
+                {item.img_complementary_text}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <AButton
+      variant="white"
+      class="o-stories-carousel__nav-btn o-stories-carousel__nav-btn--next"
+      aria-label="Siguiente"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="o-stories-carousel__nav-icon">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </AButton>
+  </div>
+
+  <AButton variant="primary" href={btnDonation} class="o-stories-carousel__btn">
+    Dona ahora
+  </AButton>
+
+  <!-- Hashtag Brand Image -->
+  {
+    gashtagImg && (
+      <AImage
+        src={gashtagImg}
+        alt="#microrelatosapechodescubierto"
+        class="o-stories-carousel__footer-graphic"
+      />
+    )
+  }
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { animateText, scaleIn, fadeInUp } from '../../../scripts/gsap-init';
+
+  function initStoriesInteractive() {
+    const cards = document.querySelectorAll('.o-stories-carousel__card');
+    const slider = document.querySelector('.o-stories-carousel__slider');
+    const prevBtn = document.querySelector('.o-stories-carousel__nav-btn--prev');
+    const nextBtn = document.querySelector('.o-stories-carousel__nav-btn--next');
+
+    // Toggle active card
+    cards.forEach((card) => {
+      card.addEventListener('click', () => {
+        cards.forEach((c) => c.classList.remove('is-active'));
+        card.classList.add('is-active');
+      });
+    });
+
+    // Slider scroll navigation
+    if (slider) {
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          slider.scrollBy({ left: -320, behavior: 'smooth' });
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          slider.scrollBy({ left: 320, behavior: 'smooth' });
+        });
+      }
+    }
+  }
+
+  function initStoriesAnimations() {
+    // Title
+    animateText('.o-stories-carousel__title', {
+      type: 'words',
+      stagger: 0.05,
+    });
+
+    // Subtitle & Desc
+    fadeInUp('.o-stories-carousel__subtitle', { delay: 0.2 });
+    fadeInUp('.o-stories-carousel__desc', { delay: 0.3 });
+
+    // Slider container
+    fadeInUp('.o-stories-carousel__slider-container', { delay: 0.4 });
+
+    // Card items
+    fadeInUp('.o-stories-carousel__card', {
+      stagger: 0.08,
+      delay: 0.5,
+    });
+
+    // Donation Button
+    fadeInUp('.o-stories-carousel__btn', { delay: 0.7 });
+
+    // Hashtag Graphic
+    fadeInUp('.o-stories-carousel__footer-graphic', { delay: 0.8 });
+  }
+
+  // Load interactive features
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      initStoriesInteractive();
+      initStoriesAnimations();
+    });
+  } else {
+    initStoriesInteractive();
+    initStoriesAnimations();
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    initStoriesInteractive();
+    initStoriesAnimations();
+  });
+</script>

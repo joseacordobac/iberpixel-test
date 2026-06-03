@@ -1,0 +1,39 @@
+---
+import './a-button.css';
+
+interface Props {
+  variant?: 'primary' | 'outline' | 'white' | 'nav';
+  href?: string;
+  target?: string;
+  type?: 'button' | 'submit';
+  class?: string;
+  id?: string;
+  disabled?: boolean;
+  [key: string]: any;
+}
+
+const {
+  variant = 'primary',
+  href,
+  target,
+  type = 'button',
+  class: className = '',
+  id,
+  disabled = false,
+  ...rest
+} = Astro.props;
+
+const classes = `a-button a-button--${variant} ${disabled ? 'is-disabled' : ''} ${className}`.trim();
+---
+
+{
+  href ? (
+    <a href={href} target={target} class={classes} id={id} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={classes} id={id} disabled={disabled} {...rest}>
+      <slot />
+    </button>
+  )
+}

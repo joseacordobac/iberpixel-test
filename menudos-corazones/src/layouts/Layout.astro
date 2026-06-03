@@ -1,0 +1,88 @@
+---
+import GSAPInit from '../components/atoms/GSAPInit/GSAPInit.astro';
+
+interface Props {
+  title?: string;
+}
+
+const { title = "Fundación Menudos Corazones - A Pecho Descubierto" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<slot />
+		
+		<!-- Initialize GSAP -->
+		<GSAPInit />
+	</body>
+</html>
+
+<style is:global>
+	:root {
+		--color-primary-red: #d00a30;
+		--color-primary-red-hover: #b00828;
+		--color-primary-red-light: #fde6eb;
+		--color-charcoal: #1a1a1a;
+		--color-charcoal-light: #333333;
+		--color-accent-yellow: #e5b413;
+		--color-gray-text: #787878;
+		--color-gray-bg: #f9f9f9;
+		--color-white: #ffffff;
+		--color-black: #000000;
+	}
+
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+		font-family: 'Inter', sans-serif;
+		color: var(--color-charcoal-light);
+		background-color: var(--color-white);
+		scroll-behavior: smooth;
+		overflow-x: hidden;
+	}
+
+	/* Utility class for GSAP animations to prevent flickering */
+	.o-hero-banner__title,
+	.o-hero-banner__subtitle,
+	.o-hero-banner__desc,
+	.o-hero-banner__heart-graphic,
+	.o-hero-banner__handwritten-text,
+	.o-statistics__title,
+	.o-statistics__subtitle,
+	.o-statistics__desc,
+	.o-statistics__card,
+	.o-statistics__btn,
+	.o-voces__title,
+	.o-voces__subtitle,
+	.o-voces__desc,
+	.o-voces__card,
+	.o-voces__comunidad-title,
+	.o-voces__comunidad-img-wrapper,
+	.o-voces__comunidad-btn,
+	.o-stories-carousel__title,
+	.o-stories-carousel__subtitle,
+	.o-stories-carousel__desc,
+	.o-stories-carousel__btn,
+	.o-stories-carousel__card,
+	.o-stories-carousel__reader,
+	.o-stories-carousel__footer-graphic {
+		will-change: transform, opacity;
+	}
+</style>

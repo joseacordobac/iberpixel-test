@@ -1,0 +1,23 @@
+---
+import './m-stat-card.css';
+import ATitle from '../../atoms/a-title/a-title.astro';
+import AParagraph from '../../atoms/a-paragraph/a-paragraph.astro';
+
+interface Props {
+  number: string;
+  text: string;
+  class?: string;
+  [key: string]: any;
+}
+
+const { number, text, class: className = '', ...rest } = Astro.props;
+---
+
+<div class={`m-stat-card ${className}`} {...rest}>
+  <ATitle tag="h3" variant="card" class="m-stat-card__number">
+    {number}
+  </ATitle>
+  <AParagraph variant="body" class="m-stat-card__text">
+    {text}
+  </AParagraph>
+</div>
