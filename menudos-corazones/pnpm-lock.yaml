@@ -20,6 +20,10 @@ importers:
       split-type:
         specifier: ^0.3.4
         version: 0.3.4
+    devDependencies:
+      wrangler:
+        specifier: ^4.97.0
+        version: 4.97.0
 
 packages:
 
